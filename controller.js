@@ -13,24 +13,27 @@
 			state: Reveal.getState(),
 			secret: multiplex.secret,
 			socketId: multiplex.id,
-			content: (evt || {}).content
+			content: (evt || {}).content,
+			detail: (evt || {}).detail
 		};
 
-		socket.emit( 'multiplex-statechanged', messageData );
+		socket.emit('multiplex-statechanged', messageData);
 
 	};
 
 	// post once the page is loaded, so the client follows also on "open URL".
-	window.addEventListener( 'load', post );
+	window.addEventListener('load', post);
 
 	// Monitor events that trigger a change in state
-	Reveal.on( 'slidechanged', post );
-	Reveal.on( 'fragmentshown', post );
-	Reveal.on( 'fragmenthidden', post );
-	Reveal.on( 'overviewhidden', post );
-	Reveal.on( 'overviewshown', post );
-	Reveal.on( 'paused', post );
-	Reveal.on( 'resumed', post );
-	document.addEventListener( 'send', post ); // broadcast custom events sent by other plugins
+	Reveal.on('slidechanged', post);
+	Reveal.on('fragmentshown', post);
+	Reveal.on('fragmenthidden', post);
+	Reveal.on('overviewhidden', post);
+	Reveal.on('overviewshown', post);
+	Reveal.on('paused', post);
+	Reveal.on('resumed', post);
 
+	// broadcast custom events sent by other plugins
+	document.addEventListener('multiplex-send', post);
+	document.addEventListener('send', post);
 }());
